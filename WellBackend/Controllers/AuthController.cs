@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,19 +32,22 @@ namespace WellBackend.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Post([FromBody]User credentials)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var identity = await GetClaimsIdentity(credentials.Email, credentials.Password);
             if (identity == null)
             {
-                return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username or password.", ModelState));
+                return Unauthorized();
             }
 
-            var jwt = await Tokens.GenerateJwt(identity, _jwtFactory, credentials.Email, _jwtOptions, new JsonSerializerSettings { Formatting = Formatting.Indented });
-            return new OkObjectResult(jwt);
+            return Json(new
+            {
+                statusCode = 200,
+                data = new
+                {
+                    id = identity.Claims.Single(c => c.Type == "id").Value,
+                    authToken = await _jwtFactory.GenerateEncodedToken(credentials.Email, identity),
+                    expiresIn = (int)_jwtOptions.ValidFor.TotalSeconds
+                }
+            });
         }
 
         private async Task<ClaimsIdentity> GetClaimsIdentity(string userEmail, string password)

@@ -36,9 +36,10 @@ namespace WellBackend.Controllers
 
             return new OkObjectResult(new
             {
-                Message = "This is secure API and user data!",
+                user.Id,
                 user.Name,
                 user.Surname,
+                user.Email,
                 user.ProfilePicture,
                 user.Gender,
                 user.Country,

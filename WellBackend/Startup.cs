@@ -29,7 +29,6 @@ namespace WellBackend
 {
     public class Startup
     {
-
         private const string SecretKey = "iNivDmHLpUA223sqsfhqGbMRdRj1PVkH";
         private readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
 
@@ -43,13 +42,6 @@ namespace WellBackend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddIdentity<User, IdentityRole>(options =>
-            //{
-            //    options.User.RequireUniqueEmail = false;
-            //})
-            //.AddEntityFrameworkStores<ApplicationDbContext>()
-            //.AddDefaultTokenProviders();
-
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), migration => migration.MigrationsAssembly("WellBackend")));
 
             services.AddSingleton<IJwtFactory, JwtFactory>();
@@ -120,22 +112,6 @@ namespace WellBackend
                 app.UseDeveloperExceptionPage();
             }
 
-            //app.UseExceptionHandler(builder =>
-            //    {
-            //        builder.Run(
-            //                async context =>
-            //                {
-            //                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            //                    context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-
-            //                    var error = context.Features.Get<IExceptionHandlerFeature>();
-            //                    if (error != null)
-            //                    {
-            //                        context.Response.AddApplicationError(error.Error.Message);
-            //                        await context.Response.WriteAsync(error.Error.Message).ConfigureAwait(false);
-            //                    }
-            //                });
-            //    });
             app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseDefaultFiles();
