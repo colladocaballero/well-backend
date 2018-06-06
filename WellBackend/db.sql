@@ -28,10 +28,10 @@ CREATE TABLE [Photos] (
     [FileName] nvarchar(50) NOT NULL,
     [UploadDate] date NOT NULL,
 	[Likes] bigint NOT NULL,
-    [UserId] bigint NOT NULL,
+    [UserId] nvarchar(450) NOT NULL,
 
 	CONSTRAINT PkPhotoId PRIMARY KEY (Id),
-	CONSTRAINT FkUserPhotoId FOREIGN KEY (UserId) REFERENCES Users(Id)
+	CONSTRAINT FkUserPhotoId FOREIGN KEY (UserId) REFERENCES AspNetUsers(Id)
 );
 
 CREATE TABLE [Comments] (
@@ -39,23 +39,35 @@ CREATE TABLE [Comments] (
     [Text] text NOT NULL,
     [PublishDate] date NOT NULL,
     [Likes] bigint NOT NULL,
-    [UserId] bigint,
+    [UserId] nvarchar(450),
     [PhotoId] bigint,
     [CommentId] bigint,
 
 	CONSTRAINT PkCommentId PRIMARY KEY (Id),
-	CONSTRAINT FkUserCommentId FOREIGN KEY (UserId) REFERENCES Users(Id),
+	CONSTRAINT FkUserCommentId FOREIGN KEY (UserId) REFERENCES AspNetUsers(Id),
 	CONSTRAINT FkPhotoCommentId FOREIGN KEY (PhotoId) REFERENCES Photos(Id),
 	CONSTRAINT FkCommentCommentId FOREIGN KEY (CommentId) REFERENCES Comments(Id)
 );
 
 CREATE TABLE Friendships (
 	[Id] bigint NOT NULL,
-	[UserId1] bigint NOT NULL,
-	[Userid2] bigint NOT NULL,
+	[UserId1] nvarchar(450) NOT NULL,
+	[UserId2] nvarchar(450) NOT NULL,
 	[FriendsSince] date NOT NULL,
 
 	CONSTRAINT PkFriendshipId PRIMARY KEY (Id),
-	CONSTRAINT FkUser1 FOREIGN KEY (UserId1) REFERENCES Users(Id),
-	CONSTRAINT FkUser2 FOREIGN KEY (UserId2) REFERENCES Users(Id)
+	CONSTRAINT FkUser1 FOREIGN KEY (UserId1) REFERENCES AspNetUsers(Id),
+	CONSTRAINT FkUser2 FOREIGN KEY (UserId2) REFERENCES AspNetUsers(Id)
+);
+
+CREATE TABLE Messages (
+	[Id] bigint NOT NULL,
+	[Title] nvarchar(50) NOT NULL,
+	[Text] nvarchar(450) NOT NULL,
+	[UserIdTransmitter] nvarchar(450) NOT NULL,
+	[UserIdReceiver] nvarchar(450) NOT NULL,
+	
+	CONSTRAINT PkMessagesId PRIMARY KEY (Id),
+	CONSTRAINT FkTransmitter FOREIGN KEY (UserIdTransmitter) REFERENCES AspNetUsers(Id),
+	CONSTRAINT FkReceiver FOREIGN KEY (UserIdReceiver) REFERENCES AspNetUsers(Id)
 );

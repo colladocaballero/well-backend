@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Http;
 using WellBackend.Extensions;
 using System.Net;
 using WellBackend.Controllers;
+using WellBackend.Services;
 
 namespace WellBackend
 {
@@ -42,9 +43,10 @@ namespace WellBackend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), migration => migration.MigrationsAssembly("WellBackend")));
+            services.AddDbContext<WellDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), migration => migration.MigrationsAssembly("WellBackend")));
 
             services.AddSingleton<IJwtFactory, JwtFactory>();
+            services.AddScoped<ICommentsService, CommentsService>();
 
             var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
             services.Configure<JwtIssuerOptions>(options =>
@@ -98,7 +100,7 @@ namespace WellBackend
                 o.Password.RequiredLength = 6;
             });
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
-            builder.AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+            builder.AddEntityFrameworkStores<WellDbContext>().AddDefaultTokenProviders();
 
             services.AddAutoMapper();
             services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());

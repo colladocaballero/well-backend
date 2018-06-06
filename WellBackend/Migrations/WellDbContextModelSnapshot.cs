@@ -11,8 +11,8 @@ using WellBackend.Contexts;
 
 namespace WellBackend.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(WellDbContext))]
+    partial class WellDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -185,6 +185,74 @@ namespace WellBackend.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("WellBackend.Models.Comment", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<long>("Likes");
+
+                    b.Property<long?>("ParentCommentId");
+
+                    b.Property<long?>("PhotoId");
+
+                    b.Property<string>("Text");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentCommentId");
+
+                    b.HasIndex("PhotoId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("WellBackend.Models.Friendship", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("FriendsSince");
+
+                    b.Property<string>("User1Id");
+
+                    b.Property<string>("User2Id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("User1Id");
+
+                    b.HasIndex("User2Id");
+
+                    b.ToTable("Friendships");
+                });
+
+            modelBuilder.Entity("WellBackend.Models.Photo", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("FileName");
+
+                    b.Property<long>("Likes");
+
+                    b.Property<DateTime>("UploadDate");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Photos");
+                });
+
             modelBuilder.Entity("WellBackend.Models.User", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
@@ -255,6 +323,39 @@ namespace WellBackend.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("WellBackend.Models.Comment", b =>
+                {
+                    b.HasOne("WellBackend.Models.Comment", "ParentComment")
+                        .WithMany()
+                        .HasForeignKey("ParentCommentId");
+
+                    b.HasOne("WellBackend.Models.Photo", "Photo")
+                        .WithMany()
+                        .HasForeignKey("PhotoId");
+
+                    b.HasOne("WellBackend.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("WellBackend.Models.Friendship", b =>
+                {
+                    b.HasOne("WellBackend.Models.User", "User1")
+                        .WithMany()
+                        .HasForeignKey("User1Id");
+
+                    b.HasOne("WellBackend.Models.User", "User2")
+                        .WithMany()
+                        .HasForeignKey("User2Id");
+                });
+
+            modelBuilder.Entity("WellBackend.Models.Photo", b =>
+                {
+                    b.HasOne("WellBackend.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

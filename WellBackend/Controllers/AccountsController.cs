@@ -16,13 +16,13 @@ namespace WellBackend.Controllers
 {
     public class AccountsController : Controller
     {
-        private readonly ApplicationDbContext _appDbContext;
+        private readonly WellDbContext _appDbContext;
         private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
         private readonly IJwtFactory _jwtFactory;
         private readonly JwtIssuerOptions _jwtOptions;
 
-        public AccountsController(UserManager<User> userManager, IMapper mapper, ApplicationDbContext appDbContext, IJwtFactory jwtFactory, IOptions<JwtIssuerOptions> jwtOptions)
+        public AccountsController(UserManager<User> userManager, IMapper mapper, WellDbContext appDbContext, IJwtFactory jwtFactory, IOptions<JwtIssuerOptions> jwtOptions)
         {
             _userManager = userManager;
             _mapper = mapper;
