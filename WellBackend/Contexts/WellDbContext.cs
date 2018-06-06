@@ -8,13 +8,15 @@ using WellBackend.Models;
 
 namespace WellBackend.Contexts
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class WellDbContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions options) : base(options)
+        public WellDbContext(DbContextOptions options) : base(options)
         {
-
         }
 
         public DbSet<User> UsersWell { get; set; }
+        public DbSet<Photo> Photos { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Friendship> Friendships { get; set; }
     }
 }

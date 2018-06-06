@@ -18,15 +18,15 @@ namespace WellBackend.Controllers
     public class HomeController : Controller
     {
         private readonly ClaimsPrincipal _caller;
-        private readonly ApplicationDbContext _appDbContext;
+        private readonly WellDbContext _appDbContext;
 
-        public HomeController(UserManager<User> userManager, ApplicationDbContext appDbContext, IHttpContextAccessor httpContextAccessor)
+        public HomeController(UserManager<User> userManager, WellDbContext appDbContext, IHttpContextAccessor httpContextAccessor)
         {
             _caller = httpContextAccessor.HttpContext.User;
             _appDbContext = appDbContext;
         }
 
-        // GET api/dashboard/home
+        // GET api/home/home
         [HttpGet("{id}")]
         public async Task<IActionResult> Home(string Id)
         {
@@ -36,15 +36,19 @@ namespace WellBackend.Controllers
 
             return new OkObjectResult(new
             {
-                user.Id,
-                user.Name,
-                user.Surname,
-                user.Email,
-                user.ProfilePicture,
-                user.Gender,
-                user.Country,
-                user.City,
-                user.Birthday
+                statusCode = 200,
+                data = new
+                {
+                    user.Id,
+                    user.Name,
+                    user.Surname,
+                    user.Email,
+                    user.ProfilePicture,
+                    user.Gender,
+                    user.Country,
+                    user.City,
+                    user.Birthday
+                }
             });
         }
     }
