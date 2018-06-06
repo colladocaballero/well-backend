@@ -47,6 +47,7 @@ namespace WellBackend
 
             services.AddSingleton<IJwtFactory, JwtFactory>();
             services.AddScoped<ICommentsService, CommentsService>();
+            services.AddScoped<IPhotosService, PhotosService>();
 
             var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
             services.Configure<JwtIssuerOptions>(options =>
