@@ -26,8 +26,7 @@ namespace WellBackend.Controllers
         public IActionResult GetWallComments(string id)
         {
             var result = _commentsService.GetWallComments(id);
-
-            //return Json(result);
+            
             return Ok(new
             {
                 statusCode = 200,

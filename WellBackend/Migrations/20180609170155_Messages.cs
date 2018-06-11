@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace WellBackend.Migrations
 {
-    public partial class Comments : Migration
+    public partial class Messages : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -192,6 +192,36 @@ namespace WellBackend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Date = table.Column<DateTime>(nullable: false),
+                    Status = table.Column<string>(nullable: true),
+                    Text = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: true),
+                    UserReceiverId = table.Column<string>(nullable: true),
+                    UserTransmitterId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Messages_AspNetUsers_UserReceiverId",
+                        column: x => x.UserReceiverId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Messages_AspNetUsers_UserTransmitterId",
+                        column: x => x.UserTransmitterId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Photos",
                 columns: table => new
                 {
@@ -314,6 +344,16 @@ namespace WellBackend.Migrations
                 column: "User2Id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Messages_UserReceiverId",
+                table: "Messages",
+                column: "UserReceiverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_UserTransmitterId",
+                table: "Messages",
+                column: "UserTransmitterId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Photos_UserId",
                 table: "Photos",
                 column: "UserId");
@@ -341,6 +381,9 @@ namespace WellBackend.Migrations
 
             migrationBuilder.DropTable(
                 name: "Friendships");
+
+            migrationBuilder.DropTable(
+                name: "Messages");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

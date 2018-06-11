@@ -233,6 +233,32 @@ namespace WellBackend.Migrations
                     b.ToTable("Friendships");
                 });
 
+            modelBuilder.Entity("WellBackend.Models.Message", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Status");
+
+                    b.Property<string>("Text");
+
+                    b.Property<string>("Title");
+
+                    b.Property<string>("UserReceiverId");
+
+                    b.Property<string>("UserTransmitterId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserReceiverId");
+
+                    b.HasIndex("UserTransmitterId");
+
+                    b.ToTable("Messages");
+                });
+
             modelBuilder.Entity("WellBackend.Models.Photo", b =>
                 {
                     b.Property<long>("Id")
@@ -349,6 +375,17 @@ namespace WellBackend.Migrations
                     b.HasOne("WellBackend.Models.User", "User2")
                         .WithMany()
                         .HasForeignKey("User2Id");
+                });
+
+            modelBuilder.Entity("WellBackend.Models.Message", b =>
+                {
+                    b.HasOne("WellBackend.Models.User", "UserReceiver")
+                        .WithMany()
+                        .HasForeignKey("UserReceiverId");
+
+                    b.HasOne("WellBackend.Models.User", "UserTransmitter")
+                        .WithMany()
+                        .HasForeignKey("UserTransmitterId");
                 });
 
             modelBuilder.Entity("WellBackend.Models.Photo", b =>
