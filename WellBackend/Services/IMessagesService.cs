@@ -17,5 +17,9 @@ namespace WellBackend.Services
         int GetUnreadCount(string userId);
 
         Task MarkAsRead(int id);
+
+        Task MarkAsUnread(int id);
+
+        Task DeleteMessage(int id);
     }
 }

@@ -86,5 +86,19 @@ namespace WellBackend.Services
             _wellDbContext.Messages.Update(message);
             await _wellDbContext.SaveChangesAsync();
         }
+
+        public async Task MarkAsUnread(int id)
+        {
+            var message = _wellDbContext.Messages.FirstOrDefault(m => m.Id == id);
+            message.Status = "Unread";
+            _wellDbContext.Messages.Update(message);
+            await _wellDbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteMessage(int id)
+        {
+            _wellDbContext.Messages.Remove(_wellDbContext.Messages.FirstOrDefault(m => m.Id == id));
+            await _wellDbContext.SaveChangesAsync();
+        }
     }
 }

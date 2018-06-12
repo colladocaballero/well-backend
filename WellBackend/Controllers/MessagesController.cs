@@ -70,11 +70,23 @@ namespace WellBackend.Controllers
 
             return NoContent();
         }
-        
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+
+        // PUT: api/Messages/5/MarkAsUnread
+        [HttpPut("{id}/MarkAsUnread")]
+        public async Task<IActionResult> MarkAsUnread(int id)
         {
+            await _messagesService.MarkAsUnread(id);
+
+            return NoContent();
+        }
+
+        // DELETE: api/Messages/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _messagesService.DeleteMessage(id);
+
+            return NoContent();
         }
     }
 }
