@@ -22,7 +22,7 @@ namespace WellBackend.Controllers
         private readonly WellDbContext _appDbContext;
         private readonly IUsersService _usersService;
 
-        public HomeController(UserManager<User> userManager, WellDbContext appDbContext, IHttpContextAccessor httpContextAccessor, IUsersService usersService)
+        public HomeController(WellDbContext appDbContext, IHttpContextAccessor httpContextAccessor, IUsersService usersService)
         {
             _caller = httpContextAccessor.HttpContext.User;
             _appDbContext = appDbContext;

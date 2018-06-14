@@ -12,7 +12,7 @@ namespace WellBackend.Services
 
         List<dynamic> GetUserMessages(string userId);
 
-        Task AddMessage(Message newMessage);
+        Task AddMessage(NewMessageModel newMessage);
 
         int GetUnreadCount(string userId);
 

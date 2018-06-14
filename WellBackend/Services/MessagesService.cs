@@ -34,16 +34,28 @@ namespace WellBackend.Services
             return messagesResponse;
         }
 
-        public async Task AddMessage(Message newMessage)
+        public async Task AddMessage(NewMessageModel newMessage)
         {
-            newMessage.Status = "Unread";
-            _wellDbContext.Messages.Add(newMessage);
+            for (int i = 0; i < newMessage.ReceiversIds.Length; i++)
+            {
+                var message = new Message
+                {
+                    Title = newMessage.Title,
+                    Text = newMessage.Text,
+                    Status = "Unread",
+                    Date = DateTime.Now,
+                    UserTransmitterId = newMessage.UserTransmitterId,
+                    UserReceiverId = newMessage.ReceiversIds[i]
+                };
+                _wellDbContext.Messages.Add(message);
+            }
+
             await _wellDbContext.SaveChangesAsync();
         }
 
         public int GetUnreadCount(string userId)
         {
-            int unreadCount = _wellDbContext.Messages.Where(m => m.Status == "Unread").ToList().Count;
+            int unreadCount = _wellDbContext.Messages.Where(m => m.UserReceiverId == userId && m.Status == "Unread").ToList().Count;
 
             return unreadCount;
         }

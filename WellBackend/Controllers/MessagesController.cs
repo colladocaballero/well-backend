@@ -48,7 +48,7 @@ namespace WellBackend.Controllers
 
         // POST: api/Messages
         [HttpPost]
-        public async Task<IActionResult> NewMessage([FromBody]Message newMessage)
+        public async Task<IActionResult> NewMessage([FromBody]NewMessageModel newMessage)
         {
             await _messagesService.AddMessage(newMessage);
 
@@ -57,7 +57,7 @@ namespace WellBackend.Controllers
                 statusCode = 201,
                 data = new
                 {
-                    message = "Message created"
+                    message = newMessage.ReceiversIds.Length + " messages were sent"
                 }
             });
         }
