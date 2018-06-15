@@ -10,28 +10,29 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using WellBackend.Contexts;
 using WellBackend.Models;
+using WellBackend.Services;
 
 namespace WellBackend.Controllers
 {
     [Authorize(Policy ="WellUser")]
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     public class HomeController : Controller
     {
         private readonly ClaimsPrincipal _caller;
         private readonly WellDbContext _appDbContext;
+        private readonly IUsersService _usersService;
 
-        public HomeController(UserManager<User> userManager, WellDbContext appDbContext, IHttpContextAccessor httpContextAccessor)
+        public HomeController(WellDbContext appDbContext, IHttpContextAccessor httpContextAccessor, IUsersService usersService)
         {
             _caller = httpContextAccessor.HttpContext.User;
             _appDbContext = appDbContext;
+            _usersService = usersService;
         }
 
-        // GET api/home/home
+        // GET api/home/mail@mail.com
         [HttpGet("{id}")]
-        public async Task<IActionResult> Home(string Id)
+        public async Task<IActionResult> GetUserDetails(string Id)
         {
-            // retrieve the user info
-            //HttpContext.User
             var user = await _appDbContext.UsersWell.SingleAsync(c => c.Id == Id);
 
             return new OkObjectResult(new
@@ -49,6 +50,19 @@ namespace WellBackend.Controllers
                     user.City,
                     user.Birthday
                 }
+            });
+        }
+
+        // GET api/home/mail@mail.com/GetFriends
+        [HttpGet("{id}/GetFriends")]
+        public IActionResult GetFriends(string id)
+        {
+            var friends = _usersService.GetFriends(id);
+
+            return new OkObjectResult(new
+            {
+                statudCode = 200,
+                data = friends
             });
         }
     }

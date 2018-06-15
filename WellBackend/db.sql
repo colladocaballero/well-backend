@@ -49,7 +49,7 @@ CREATE TABLE [Comments] (
 	CONSTRAINT FkCommentCommentId FOREIGN KEY (CommentId) REFERENCES Comments(Id)
 );
 
-CREATE TABLE Friendships (
+CREATE TABLE [Friendships] (
 	[Id] bigint NOT NULL,
 	[UserId1] nvarchar(450) NOT NULL,
 	[UserId2] nvarchar(450) NOT NULL,
@@ -60,14 +60,15 @@ CREATE TABLE Friendships (
 	CONSTRAINT FkUser2 FOREIGN KEY (UserId2) REFERENCES AspNetUsers(Id)
 );
 
-CREATE TABLE Messages (
+CREATE TABLE [Messages] (
 	[Id] bigint NOT NULL,
-	[Title] nvarchar(50) NOT NULL,
+	[Title] nvarchar(450) NOT NULL,
 	[Text] nvarchar(450) NOT NULL,
 	[UserIdTransmitter] nvarchar(450) NOT NULL,
 	[UserIdReceiver] nvarchar(450) NOT NULL,
-	
-	CONSTRAINT PkMessagesId PRIMARY KEY (Id),
-	CONSTRAINT FkTransmitter FOREIGN KEY (UserIdTransmitter) REFERENCES AspNetUsers(Id),
-	CONSTRAINT FkReceiver FOREIGN KEY (UserIdReceiver) REFERENCES AspNetUsers(Id)
+	[Status] int NOT NULL,
+
+	CONSTRAINT PkMessageId PRIMARY KEY(Id),
+	CONSTRAINT FkUserIdTransmitter FOREIGN KEY (UserIdTransmitter) REFERENCES AspNetUsers(Id),
+	CONSTRAINT FkUserIdReceiver FOREIGN KEY	(UserIdReceiver) REFERENCES AspNetUsers(Id)
 );

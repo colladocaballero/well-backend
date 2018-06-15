@@ -18,5 +18,6 @@ namespace WellBackend.Contexts
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Friendship> Friendships { get; set; }
+        public DbSet<Message> Messages { get; set; }
     }
 }
