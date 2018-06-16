@@ -49,6 +49,19 @@ namespace WellBackend.Controllers
                 }
             });
         }
+
+        // GET api/Comments/mail@mail.com/GetUserComments
+        [HttpGet("{id}/GetUserComments")]
+        public IActionResult GetUserComments(string id)
+        {
+            var result = _commentsService.GetUserComments(id);
+
+            return new OkObjectResult(new
+            {
+                statusCode = 200,
+                data = result
+            });
+        }
         
         // PUT: api/Comments/5
         [HttpPut("{id}")]

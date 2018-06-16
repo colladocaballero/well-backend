@@ -12,5 +12,7 @@ namespace WellBackend.Services
         Task AddComment(Comment newComment);
 
         List<dynamic> GetWallComments(string id);
+
+        List<Comment> GetUserComments(string id);
     }
 }

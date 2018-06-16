@@ -20,6 +20,8 @@ namespace WellBackend.Services
 
         public async Task AddComment(Comment newComment)
         {
+            newComment.Date = DateTime.Now;
+
             var user = _wellDbContext.UsersWell.FirstOrDefault(u => u.Id == newComment.UserId);
 
             _wellDbContext.Comments.Add(newComment);
@@ -73,6 +75,23 @@ namespace WellBackend.Services
             }
 
             return comments.OrderByDescending(c => c.Date).ToList();
+        }
+
+        public List<Comment> GetUserComments(string id)
+        {
+            List<Comment> comments = _wellDbContext.Comments.Where(c => c.UserId == id).OrderByDescending(c => c.Date).ToList();
+
+            var user = _wellDbContext.UsersWell.FirstOrDefault(u => u.Id == id);
+
+            comments.ForEach(c => c.User = new User
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Surname = user.Surname,
+                ProfilePicture = user.ProfilePicture
+            });
+
+            return comments;
         }
     }
 }
