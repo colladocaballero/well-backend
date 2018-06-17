@@ -54,8 +54,8 @@ namespace WellBackend.Controllers
                     Surname = newUser.Surname,
                     Birthday = newUser.Birthday,
                     Gender = newUser.Gender,
-                    JoinDate = newUser.JoinDate,
-                    ProfilePicture = newUser.Gender == "Masculino" ? "male_default.jpg" : "female_default.jpg"
+                    JoinDate = DateTime.Now,
+                    ProfilePicture = "default/" + (newUser.Gender == "Masculino" ? "male_default.jpg" : "female_default.jpg")
                 });
 
                 var identity = await Task.FromResult(_jwtFactory.GenerateClaimsIdentity(newUser.Email, newUser.Id));

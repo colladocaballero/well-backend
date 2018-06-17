@@ -8,5 +8,7 @@ namespace WellBackend.Services
     public interface IUsersService
     {
         List<dynamic> GetFriends(string id);
+
+        List<dynamic> SearchUsers(string query, string id);
     }
 }

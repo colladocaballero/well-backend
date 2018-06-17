@@ -50,6 +50,7 @@ namespace WellBackend
             services.AddScoped<IPhotosService, PhotosService>();
             services.AddScoped<IMessagesService, MessagesService>();
             services.AddScoped<IUsersService, UsersService>();
+            services.AddScoped<IFriendRequestsService, FriendRequestsService>();
 
             var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
             services.Configure<JwtIssuerOptions>(options =>

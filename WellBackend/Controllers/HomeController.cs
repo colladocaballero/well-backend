@@ -65,5 +65,18 @@ namespace WellBackend.Controllers
                 data = friends
             });
         }
+
+        // GET: api/home/search/query
+        [HttpGet("search/{query}/{id}")]
+        public IActionResult SearchUsers(string query, string id)
+        {
+            var users = _usersService.SearchUsers(query, id);
+
+            return new OkObjectResult(new
+            {
+                statusCode = 200,
+                data = users
+            });
+        }
     }
 }
