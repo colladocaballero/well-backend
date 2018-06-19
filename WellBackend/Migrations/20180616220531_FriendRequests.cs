@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace WellBackend.Migrations
 {
-    public partial class Messages : Migration
+    public partial class FriendRequests : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -162,6 +162,33 @@ namespace WellBackend.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FriendRequests",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Date = table.Column<DateTime>(nullable: false),
+                    User1Id = table.Column<string>(nullable: true),
+                    User2Id = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FriendRequests", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FriendRequests_AspNetUsers_User1Id",
+                        column: x => x.User1Id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_FriendRequests_AspNetUsers_User2Id",
+                        column: x => x.User2Id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -334,6 +361,16 @@ namespace WellBackend.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FriendRequests_User1Id",
+                table: "FriendRequests",
+                column: "User1Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FriendRequests_User2Id",
+                table: "FriendRequests",
+                column: "User2Id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Friendships_User1Id",
                 table: "Friendships",
                 column: "User1Id");
@@ -378,6 +415,9 @@ namespace WellBackend.Migrations
 
             migrationBuilder.DropTable(
                 name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "FriendRequests");
 
             migrationBuilder.DropTable(
                 name: "Friendships");

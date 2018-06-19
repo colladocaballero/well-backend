@@ -54,16 +54,47 @@ namespace WellBackend.Controllers
         }
 
         // GET api/home/mail@mail.com/GetFriends
-        [HttpGet("{id}/GetFriends")]
-        public IActionResult GetFriends(string id)
+        [HttpGet("{id}/{userId}/GetFriends")]
+        public IActionResult GetFriends(string id, string userId)
         {
-            var friends = _usersService.GetFriends(id);
+            var friends = _usersService.GetFriends(id, userId);
 
             return new OkObjectResult(new
             {
                 statudCode = 200,
                 data = friends
             });
+        }
+
+        // GET: api/home/search/query/mail@mail.com - Search query and user's id for excluding him/her from search results
+        [HttpGet("search/{query}/{id}")]
+        public IActionResult SearchUsers(string query, string id)
+        {
+            var users = _usersService.SearchUsers(query, id);
+
+            return new OkObjectResult(new
+            {
+                statusCode = 200,
+                data = users
+            });
+        }
+
+        // PUT: api/home/mail@mail.com/ChangeProfilePicture
+        [HttpPut("{id}/ChangeProfilePicture")]
+        public async Task<IActionResult> ChangeProfilePicture(string id, [FromBody]Photo photo)
+        {
+            await _usersService.ChangeProfilePicture(id, photo);
+
+            return NoContent();
+        }
+
+        // DELETE: api/home/mail@mail.com/mail2@mail2.com
+        [HttpDelete("{user1Id}/{user2Id}")]
+        public async Task<IActionResult> RemoveFriend(string user1Id, string user2Id)
+        {
+            await _usersService.RemoveFriend(user1Id, user2Id);
+
+            return NoContent();
         }
     }
 }

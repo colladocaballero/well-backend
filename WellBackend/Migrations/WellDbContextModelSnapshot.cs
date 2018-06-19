@@ -213,6 +213,26 @@ namespace WellBackend.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("WellBackend.Models.FriendRequest", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("User1Id");
+
+                    b.Property<string>("User2Id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("User1Id");
+
+                    b.HasIndex("User2Id");
+
+                    b.ToTable("FriendRequests");
+                });
+
             modelBuilder.Entity("WellBackend.Models.Friendship", b =>
                 {
                     b.Property<long>("Id")
@@ -364,6 +384,17 @@ namespace WellBackend.Migrations
                     b.HasOne("WellBackend.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("WellBackend.Models.FriendRequest", b =>
+                {
+                    b.HasOne("WellBackend.Models.User", "User1")
+                        .WithMany()
+                        .HasForeignKey("User1Id");
+
+                    b.HasOne("WellBackend.Models.User", "User2")
+                        .WithMany()
+                        .HasForeignKey("User2Id");
                 });
 
             modelBuilder.Entity("WellBackend.Models.Friendship", b =>
