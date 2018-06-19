@@ -16,6 +16,6 @@ namespace WellBackend.Services
 
         Task AcceptFriendRequest(FriendRequest friendRequest);
 
-        Task RejectFriendRequest(FriendRequest friendRequest);
+        Task RejectFriendRequest(long id);
     }
 }

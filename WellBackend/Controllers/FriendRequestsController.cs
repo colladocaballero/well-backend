@@ -57,17 +57,30 @@ namespace WellBackend.Controllers
                 }
             });
         }
-        
-        // PUT: api/FriendRequests/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+
+        // POST: api/FriendRequests/AcceptFriendRequest
+        [HttpPost("AcceptFriendRequest")]
+        public async Task<IActionResult> AcceptFriendRequest([FromBody]FriendRequest friendRequest)
         {
+            await _friendRequestsService.AcceptFriendRequest(friendRequest);
+
+            return Created("New friendship", new
+            {
+                statusCode = 201,
+                data = new
+                {
+                    message = "Friend request accepted. New frienship created"
+                }
+            });
         }
-        
-        // DELETE: api/ApiWithActions/5
+
+        // DELETE: api/FriendRequests/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(long id)
         {
+            await _friendRequestsService.RejectFriendRequest(id);
+
+            return NoContent();
         }
     }
 }

@@ -74,14 +74,27 @@ namespace WellBackend.Services
             }
         }
 
-        public Task AcceptFriendRequest(FriendRequest friendRequest)
+        public async Task AcceptFriendRequest(FriendRequest friendRequest)
         {
-            throw new NotImplementedException();
+            _wellDbContext.Friendships.Add(new Friendship
+            {
+                User1Id = friendRequest.User1Id,
+                User2Id = friendRequest.User2Id,
+                FriendsSince = DateTime.Now
+            });
+
+            await _wellDbContext.SaveChangesAsync();
+
+            _wellDbContext.FriendRequests.Remove(friendRequest);
+
+            await _wellDbContext.SaveChangesAsync();
         }
 
-        public Task RejectFriendRequest(FriendRequest friendRequest)
+        public async Task RejectFriendRequest(long id)
         {
-            throw new NotImplementedException();
+            _wellDbContext.FriendRequests.Remove(_wellDbContext.FriendRequests.FirstOrDefault(fr => fr.Id == id));
+
+            await _wellDbContext.SaveChangesAsync();
         }
     }
 }
